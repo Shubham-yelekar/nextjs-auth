@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import { error } from "console";
 
 interface userType {
   email: string;
@@ -38,7 +37,6 @@ const page = () => {
       setLoading(true);
       const response = await axios.post("api/users/signup", user);
       console.log("Signup Success", response.data);
-
       router.push("/login");
     } catch (error: any) {
       toast.error(error.message, {
@@ -52,6 +50,7 @@ const page = () => {
         },
       });
     } finally {
+      setLoading(false);
     }
   };
 
@@ -106,12 +105,7 @@ const page = () => {
           <label htmlFor="password" className="text-neutral-400">
             Password
           </label>
-          <button
-            onClick={() => setTogglePass((prev) => !prev)}
-            className="absolute cursor-pointer bg-neutral-600 right-0 top-7 aspect-square w-9 p-0"
-          >
-            {togglePass ? "⌒" : "⌓"}
-          </button>
+
           <input
             type={togglePass ? "password" : "text"}
             onChange={(e) => setUser({ ...user, password: e.target.value })}
@@ -120,6 +114,12 @@ const page = () => {
             name="password"
             required
           />
+          <button
+            onClick={() => setTogglePass((prev) => !prev)}
+            className="absolute cursor-pointer bg-neutral-600 right-0 top-7 aspect-square w-9 p-0"
+          >
+            {togglePass ? "⌒" : "⌓"}
+          </button>
         </div>
         <button
           onClick={onSignup}
